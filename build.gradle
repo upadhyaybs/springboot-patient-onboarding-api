@@ -4,6 +4,8 @@ plugins {
 	id 'java'
 }
 
+apply plugin: 'java'
+
 group = 'com.codify'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -27,6 +29,30 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+}
+
+tasks.named("bootJar"){
+	enabled=true
+	archiveClassifier=''
+	duplicatesStrategy=DuplicatesStrategy.EXCLUDE
+}
+
+tasks.named("jar"){
+	enabled=false
+	archiveClassifier=''
+	duplicatesStrategy=DuplicatesStrategy.EXCLUDE
+}
+
+sourceSets {
+	test {
+		java {
+			srcDir file('src/test/java')
+		}
+		resources {
+			srcDir file('src/test/java')
+			exclude '**/*.java'
+		}
+	}
 }
 
 tasks.named('test') {
