@@ -7,9 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Request {
+public class RequestData {
 
-        private String correlationId;
-
-        private RequestData requestData;
+    private String zip;
+    private String condition;
+    private String contact;
 }

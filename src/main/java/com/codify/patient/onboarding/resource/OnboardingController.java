@@ -24,19 +24,20 @@ public class OnboardingController {
 	}
 
 	@PostMapping("/assignhospital/{zip}")
-	public Mono<Response> assignHospitalToPatient(@RequestBody Request request, @PathVariable("zip") String zip) {
-		log.info("Request : " +request + " | zip :" +zip);
-		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).businessKey(request.getBusinessKey()).id(request.getId()).hospital(service.getParticipatingHospital(zip)).build());
+	public Mono<Response> assignHospitalToPatient(@RequestBody Request request) {
+		log.info("assignHospitalToPatient |Request : " +request );
+		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).hospital(service.getParticipatingHospital(request.getRequestData().getZip())).build());
 	}
 
 	@PostMapping("/assigndoctor/{condition}")
-	public Mono<Response> assignDoctorToPatient(@RequestBody Request request,@PathVariable("condition") String condition) {
-		log.info("Request : " +request + " | condition :" +condition);
-		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).businessKey(request.getBusinessKey()).id(request.getId()).doctor(service.getParticipatingDoctor(condition)).build());
+	public Mono<Response> assignDoctorToPatient(@RequestBody Request request) {
+		log.info("assignDoctorToPatient |Request : " +request );
+		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).doctor(service.getParticipatingDoctor(request.getRequestData().getCondition())).build());
 	}
 
 	@PostMapping("/notify/{contact}")
-	public Mono<Response> notifyPatient(@RequestBody Request request,@PathVariable("contact") String contact) {
+	public Mono<Response> notifyPatient(@RequestBody Request request) {
+		log.info("notifyPatient |Request : " +request );
 		// do nothing here for demo...
 		// irl would send email or text message or both
 		return Mono.empty();
