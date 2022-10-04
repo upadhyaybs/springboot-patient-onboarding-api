@@ -1,13 +1,10 @@
 package com.codify.patient.onboarding.resource;
 
+import com.codify.patient.onboarding.domain.Request;
+import com.codify.patient.onboarding.domain.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codify.patient.onboarding.domain.Doctor;
-import com.codify.patient.onboarding.domain.Hospital;
 import com.codify.patient.onboarding.service.IOnboardingService;
 
 import reactor.core.publisher.Mono;
@@ -26,17 +23,17 @@ public class OnboardingController {
 	}
 
 	@PostMapping("/assignhospital/{zip}")
-	public Mono<Hospital> assignHospitalToPatient(@PathVariable("zip") String zip) {
-		return Mono.just(service.getParticipatingHospital(zip));
+	public Mono<Response> assignHospitalToPatient(@RequestBody Request request, @PathVariable("zip") String zip) {
+		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).businessKey(request.getBusinessKey()).id(request.getId()).hospital(service.getParticipatingHospital(zip)).build());
 	}
 
 	@PostMapping("/assigndoctor/{condition}")
-	public Mono<Doctor> assignDoctorToPatient(@PathVariable("condition") String condition) {
-		return Mono.just(service.getParticipatingDoctor(condition));
+	public Mono<Response> assignDoctorToPatient(@RequestBody Request request,@PathVariable("condition") String condition) {
+		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).businessKey(request.getBusinessKey()).id(request.getId()).doctor(service.getParticipatingDoctor(condition)).build());
 	}
 
 	@PostMapping("/notify/{contact}")
-	public Mono<Void> notifyPatient(@PathVariable("contact") String contact) {
+	public Mono<Response> notifyPatient(@RequestBody Request request,@PathVariable("contact") String contact) {
 		// do nothing here for demo...
 		// irl would send email or text message or both
 		return Mono.empty();
