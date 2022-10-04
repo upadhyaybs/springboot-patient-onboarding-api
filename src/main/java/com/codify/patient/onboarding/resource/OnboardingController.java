@@ -23,19 +23,19 @@ public class OnboardingController {
 		this.service=service;
 	}
 
-	@PostMapping("/assignhospital/{zip}")
+	@PostMapping("/assignhospital")
 	public Mono<Response> assignHospitalToPatient(@RequestBody Request request) {
 		log.info("assignHospitalToPatient |Request : " +request );
 		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).hospital(service.getParticipatingHospital(request.getRequestData().getZip())).build());
 	}
 
-	@PostMapping("/assigndoctor/{condition}")
+	@PostMapping("/assigndoctor")
 	public Mono<Response> assignDoctorToPatient(@RequestBody Request request) {
 		log.info("assignDoctorToPatient |Request : " +request );
 		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).doctor(service.getParticipatingDoctor(request.getRequestData().getCondition())).build());
 	}
 
-	@PostMapping("/notify/{contact}")
+	@PostMapping("/notify")
 	public Mono<Response> notifyPatient(@RequestBody Request request) {
 		log.info("notifyPatient |Request : " +request );
 		// do nothing here for demo...
