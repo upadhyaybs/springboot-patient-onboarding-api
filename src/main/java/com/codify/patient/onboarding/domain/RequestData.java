@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RequestData {
-
     private String zip;
     private String condition;
     private String contact;

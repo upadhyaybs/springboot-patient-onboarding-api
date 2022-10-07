@@ -1,7 +1,8 @@
 package com.codify.patient.onboarding.resource;
 
-import com.codify.patient.onboarding.domain.Request;
+import com.codify.patient.onboarding.domain.Patient;
 import com.codify.patient.onboarding.domain.Response;
+import com.codify.patient.onboarding.domain.ResponseData;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.codify.patient.onboarding.service.IOnboardingService;
 
 import reactor.core.publisher.Mono;
+
 
 
 @Slf4j
@@ -23,21 +25,33 @@ public class OnboardingController {
 		this.service=service;
 	}
 
-	@PostMapping("/assignhospital")
-	public Mono<Response> assignHospitalToPatient(@RequestBody Request request) {
+	@PostMapping("/patient")
+	public Mono<Response> addPatient(@RequestBody Patient request) {
 		log.info("assignHospitalToPatient |Request : " +request );
-		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).hospital(service.getParticipatingHospital(request.getRequestData().getZip())).build());
+		return Mono.just(Response.builder()
+				.data(ResponseData.builder().patient(service.save(request)).build())
+				.build());
 	}
 
-	@PostMapping("/assigndoctor")
-	public Mono<Response> assignDoctorToPatient(@RequestBody Request request) {
-		log.info("assignDoctorToPatient |Request : " +request );
-		return Mono.just(Response.builder().correlationId(request.getCorrelationId()).doctor(service.getParticipatingDoctor(request.getRequestData().getCondition())).build());
+	@GetMapping("/assignhospital/{zip}")
+	public Mono<Response> assignHospitalToPatient(@PathVariable("zip") String zip) {
+		log.info("assignHospitalToPatient |zip : " +zip );
+		return Mono.just(Response.builder()
+				.data(ResponseData.builder().hospital(service.getParticipatingHospital(zip)).build())
+				.build());
 	}
 
-	@PostMapping("/notify")
-	public Mono<Response> notifyPatient(@RequestBody Request request) {
-		log.info("notifyPatient |Request : " +request );
+	@GetMapping("/assigndoctor/{condition}")
+	public Mono<Response> assignDoctorToPatient(@PathVariable("condition") String condition) {
+		log.info("assignDoctorToPatient |condition : " +condition );
+		return Mono.just(Response.builder()
+				.data(ResponseData.builder().doctor(service.getParticipatingDoctor(condition)).build())
+				.build());
+	}
+
+	@PostMapping("/notify/{contact}")
+	public Mono<Response> notifyPatient(@PathVariable("contact") String contact) {
+		log.info("notifyPatient |contact : " +contact );
 		// do nothing here for demo...
 		// irl would send email or text message or both
 		return Mono.empty();

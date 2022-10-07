@@ -4,6 +4,7 @@ package com.codify.patient.onboarding.service;
 
 import com.codify.patient.onboarding.domain.Doctor;
 import com.codify.patient.onboarding.domain.Hospital;
+import com.codify.patient.onboarding.domain.Patient;
 import com.codify.patient.onboarding.repository.IOnboardingPatientRepository;
 
 
@@ -20,6 +21,11 @@ public class OnboardingServiceImpl implements IOnboardingService{
 
     public OnboardingServiceImpl(IOnboardingPatientRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public Patient save(Patient patient) {
+        return repository.savePatient(patient);
     }
 
     @Override

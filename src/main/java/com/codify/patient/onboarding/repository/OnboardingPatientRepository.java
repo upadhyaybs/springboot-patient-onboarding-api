@@ -4,7 +4,10 @@ package com.codify.patient.onboarding.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
+import com.codify.patient.onboarding.domain.Patient;
 import org.springframework.stereotype.Component;
 
 import com.codify.patient.onboarding.domain.Doctor;
@@ -13,6 +16,16 @@ import com.codify.patient.onboarding.domain.Hospital;
 
 @Component
 public class OnboardingPatientRepository implements IOnboardingPatientRepository{
+
+    private ConcurrentHashMap<String,Patient> patientStore=new ConcurrentHashMap<>();
+
+    @Override
+    public Patient savePatient(Patient patient) {
+        String uuid= UUID.randomUUID().toString();
+        patient.setId(uuid);
+        patientStore.put(uuid,patient);
+        return patient;
+    }
 
     @Override
     public List<Hospital> getParticipatingHospitals() {

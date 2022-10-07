@@ -10,8 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Response {
+public class ResponseData {
+    private Patient patient;
+    private Doctor doctor;
+    private Hospital hospital;
 
-   private String correlationId;
-   private ResponseData data;
 }

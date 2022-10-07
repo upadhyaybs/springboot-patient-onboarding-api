@@ -8,8 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Request {
-
         private String correlationId;
-
         private RequestData requestData;
 }
