@@ -1,1 +1,1 @@
-# spring-boot-patient-onboarding-api
+# springboot-patient-onboarding-api
